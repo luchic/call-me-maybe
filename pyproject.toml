@@ -1,0 +1,18 @@
+[project]
+name = "call_me_maybe"
+version = "0.1.0"
+description = "Function calling tool using constrained decoding with small LLMs"
+requires-python = ">=3.10"
+
+dependencies = [
+	"pydantic>=2.11.9",
+	"numpy>=1.26",
+	"mypy>=1.0",
+	"llm-sdk",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+llm-sdk = { path = "./llm_sdk" }
