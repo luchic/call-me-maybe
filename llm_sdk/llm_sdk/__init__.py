@@ -86,6 +86,24 @@ class Small_LLM_Model:
             ids = ids.tolist()
         return self._tokenizer.decode(ids, skip_special_tokens=True)
 
+    def generate(self, ids: torch.Tensor, max_new_tokens: int = 50, include_prompt: bool = False) -> str:
+        """Generate text from *ids*.
+
+        By default this returns only the newly generated tokens. Set
+        ``include_prompt=True`` to decode the prompt together with the completion.
+        """
+        with torch.no_grad():
+            output_ids = self._model.generate(
+                input_ids=ids,
+                max_new_tokens=max_new_tokens,
+                pad_token_id=self._tokenizer.pad_token_id,
+                eos_token_id=self._tokenizer.eos_token_id,
+            )
+
+        if not include_prompt:
+            output_ids = output_ids[:, ids.shape[-1]:]
+
+        return self.decode(output_ids[0])
 
     def get_logits_from_input_ids(self, input_ids: list[int]) -> list[float]:
         """
