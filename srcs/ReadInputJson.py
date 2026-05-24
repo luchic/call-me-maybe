@@ -9,7 +9,12 @@ class ReadInputJson:
             raise TypeError("source must be a string path or pathlib.Path")
 
         self.source = Path(source)
+        if not self.source.exists():
+            raise FileNotFoundError(f"File not found: {self.source}")
 
+        if not self.source.is_file():
+            raise ValueError(f"Path is not a file: {self.source}")
+    
     def read(self) -> list[str]:
         data = self.read_raw()
         return self._extract_prompts(data)
@@ -31,7 +36,7 @@ class ReadInputJson:
                 raise ValueError(f"Input item {index} must be an object")
 
             prompt = item.get("prompt")
-            if not isinstance(prompt, str):
+            if not isinstance(prompt, str) or prompt == "":
                 raise ValueError(f"Input item {index} must contain a string 'prompt'")
 
     def _extract_prompts(self, data: list[dict[str, Any]]) -> list[str]:
