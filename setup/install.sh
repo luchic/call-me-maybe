@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export VENV="${HOME}/goinfre/venv"
 export CACHE="${HOME}/goinfre/.cache"
 export UV_CACHE_DIR="${CACHE}/uv"
