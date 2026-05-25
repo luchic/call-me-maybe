@@ -1,0 +1,108 @@
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer, PreTrainedTokenizer, PreTrainedModel, logging
+from huggingface_hub import hf_hub_download
+from typing import Callable
+from typing import Optional
+
+
+
+logging.set_verbosity_error()  # keep the console clean
+
+
+class LocalLLM:
+    """Utility class wrapping a lightweight Hugging Face causal-LM for fast, low-memory experimentation.
+
+    Parameters
+    ----------
+    model_name: str, default="Qwen/Qwen3-0.6B"
+        Identifier of the model on the HF Hub.
+    device: str | None, default=None
+        Computation device. If *None* we automatically select ``mps`` when available on macOS,
+        ``cuda`` when available, otherwise we fall back to ``cpu``.
+    dtype: torch.dtype | None, default=None
+        Numerical precision. When using a GPU or MPS we default to ``float16`` to keep memory
+        usage reasonable; on CPU we keep ``float32`` for maximum compatibility.
+    """
+
+    def __init__(
+        self,
+        model_name: str = "Qwen/Qwen3-0.6B",
+        *,
+        device: str | None = None,
+        dtype: torch.dtype | None = None,
+        trust_remote_code: bool = True,
+    ) -> None:
+        self._model_name = model_name
+
+        # Auto-select device with priority: mps > cuda > cpu
+        if device is None:
+            if torch.backends.mps.is_available():
+                device = "mps"
+            elif torch.cuda.is_available():
+                device = "cuda"
+            else:
+                device = "cpu"
+        self._device = device
+
+        if dtype is None:
+            dtype = torch.float16 if self._device in ["cuda", "mps"] else torch.float32
+        self._dtype = dtype
+
+        # --- load tokenizer & model -------------------------------------------------
+        self._tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(
+            model_name, trust_remote_code=trust_remote_code
+        )
+        if self._tokenizer.pad_token_id is None:
+            # ensure we have a pad token to keep batch helpers happy
+            self._tokenizer.pad_token_id = self._tokenizer.eos_token_id
+
+        self._model: PreTrainedModel = AutoModelForCausalLM.from_pretrained(
+            model_name,
+            torch_dtype=self._dtype,
+            device_map="auto" if self._device == "cuda" else None,
+            trust_remote_code=trust_remote_code,
+        )
+        self._model.to(self._device)
+        self._model.eval()
+
+        # switch to inference-only mode
+        for p in self._model.parameters():
+            p.requires_grad = False
+
+
+    def encode(self, text: str) -> torch.Tensor:
+        """Tokenise *text* and return a 2-D ``input_ids`` tensor on the target device."""
+        ids = self._tokenizer.encode(text, add_special_tokens=False)
+        return torch.tensor([ids], device=self._device, dtype=torch.long)
+
+
+    def decode(self, ids: torch.Tensor | list[int]) -> str:
+        """Inverse of :py:meth:`encode`. Removes special tokens."""
+        if isinstance(ids, torch.Tensor):
+            ids = ids.tolist()
+        return self._tokenizer.decode(ids, skip_special_tokens=True)
+
+    def generate(
+        self, ids: torch.Tensor,
+        allowed_tokens_fn: Optional[Callable[[int, torch.Tensor], list[int]]] = None
+    ) -> str:
+        """Generate text from *ids*.
+
+        By default this returns only the newly generated tokens. Set
+        ``include_prompt=True`` to decode the prompt together with the completion.
+
+        """
+        with torch.no_grad():
+            output_ids = self._model.generate(input_ids=ids,
+                max_new_tokens=10,
+                do_sample=False,
+                num_beams=1,
+                prefix_allowed_tokens_fn=allowed_tokens_fn,
+                pad_token_id=self._tokenizer.pad_token_id,
+                eos_token_id=self._tokenizer.eos_token_id
+            )
+
+        output_ids = output_ids[:, ids.shape[-1]:]
+
+        return self.decode(output_ids[0])
+
