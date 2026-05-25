@@ -1,6 +1,6 @@
 from typing import Any
 
-class UserpromptValidator:
+class UserPromptValidator:
     
     def validate(self, data: Any) -> None:
         if not isinstance(data, list):

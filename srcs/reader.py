@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from typing import Any
-from mappers.user_prompt_validator import UserpromptValidator
+from mappers.user_prompt_validator import UserPromptValidator
 
 class ReadInputJson:
     def __init__(self, source: str | Path) -> None:
@@ -9,7 +9,7 @@ class ReadInputJson:
             raise TypeError("source must be a string path or pathlib.Path")
 
         self.source = Path(source)
-        self.validator = UserpromptValidator()
+        self.validator = UserPromptValidator()
         if not self.source.exists():
             raise FileNotFoundError(f"File not found: {self.source}")
 
