@@ -9,3 +9,13 @@ Then I need to move on to the next aspect.
 If I need to extract some data, like a user's name, then:
 I can constrain the model to use only tokens from the user input.
 Then I can use these tokens to parse the user data.
+
+## Some hints
+
+Make work line mask replacement:
+
+
+Flow:
+
+(It could be done with go language)
+ReadInput (Get prompt from user) -> Buildprompt -> FindSomeFunction -> CallFunction  
