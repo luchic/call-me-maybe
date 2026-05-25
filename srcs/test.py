@@ -6,9 +6,10 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 model_name = "Qwen/Qwen2.5-0.5B-Instruct"
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
+
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
-    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+    dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
     device_map="auto"
 )
 
@@ -27,7 +28,6 @@ choice_token_ids = [
 ]
 
 eos_id = tokenizer.eos_token_id
-
 
 def choose_function(user_text: str) -> str:
     prompt = f"""You are a function router.
@@ -85,7 +85,7 @@ def extract_two_numbers(text: str):
 
     return a, b
 
-# user_promts = [
+# user_prompts = [
 #   {
 #     "prompt": "What is the sum of 2 and 3?"
 #   },
