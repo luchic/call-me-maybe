@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from typing import Any
-from mappers.system_prompt_validator import SystemPromptValidator
+from .mappers.system_prompt_validator import SystemPromptValidator
 
 
 class PromptBuilder:

@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from typing import Any
-from mappers.user_prompt_validator import UserPromptValidator
+from .mappers.user_prompt_validator import UserPromptValidator
 
 class ReadInputJson:
     def __init__(self, source: str | Path) -> None:
