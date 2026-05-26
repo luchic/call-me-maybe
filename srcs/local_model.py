@@ -72,15 +72,27 @@ class LocalLLM:
 
     def encode(self, text: str) -> torch.Tensor:
         """Tokenise *text* and return a 2-D ``input_ids`` tensor on the target device."""
-        ids = self._tokenizer.encode(text, add_special_tokens=False)
-        return torch.tensor([ids], device=self._device, dtype=torch.long)
-
+        return self._tokenizer.encode(text, add_special_tokens=False, return_tensors="pt")
+    
+    def encode_list(self, texts: list):
+        encoded_textes = [
+            self.encode(text)
+            for text in texts ]
+        return encoded_textes
 
     def decode(self, ids: torch.Tensor | list[int]) -> str:
         """Inverse of :py:meth:`encode`. Removes special tokens."""
         if isinstance(ids, torch.Tensor):
             ids = ids.tolist()
         return self._tokenizer.decode(ids, skip_special_tokens=True)
+
+    def ids_to_list(self, ids: torch.Tensor | list[int]) -> list[int]:
+        if isinstance(ids, torch.Tensor):
+            ids = ids.flatten().tolist()
+        return [int(token_id) for token_id in ids]
+    
+    def get_eof_token_id(self):
+        return self._tokenizer.eos_token_id
 
     def generate(
         self, ids: torch.Tensor,
@@ -102,7 +114,8 @@ class LocalLLM:
                 eos_token_id=self._tokenizer.eos_token_id
             )
 
+        print(output_ids)
         output_ids = output_ids[:, ids.shape[-1]:]
+        print(output_ids)
 
         return self.decode(output_ids[0])
-
