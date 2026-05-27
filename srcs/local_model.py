@@ -74,7 +74,7 @@ class LocalLLM:
         """Tokenise *text* and return a 2-D ``input_ids`` tensor on the target device."""
         return self._tokenizer.encode(text, add_special_tokens=False, return_tensors="pt")
     
-    def encode_list(self, texts: list):
+    def encode_list(self, texts: list[str]) -> list[torch.Tensor]:
         encoded_textes = [
             self.encode(text)
             for text in texts ]
@@ -114,8 +114,6 @@ class LocalLLM:
                 eos_token_id=self._tokenizer.eos_token_id
             )
 
-        print(output_ids)
         output_ids = output_ids[:, ids.shape[-1]:]
         print(output_ids)
-
         return self.decode(output_ids[0])
