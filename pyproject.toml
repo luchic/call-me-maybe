@@ -10,10 +10,10 @@ dependencies = [
 	"mypy>=1.0",
 	"llm-sdk",
 	"accelerate>=1.13.0",
+    "torch>=2.0.0",
+    "transformers>=4.40.0",
+    "huggingface-hub>=0.20.0",
 ]
 
 [tool.uv]
 package = false
-
-[tool.uv.sources]
-llm-sdk = { path = "./llm_sdk" }

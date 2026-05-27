@@ -18,4 +18,4 @@ Make work line mask replacement:
 Flow:
 
 (It could be done with go language)
-ReadInput (Get prompt from user) -> Buildprompt -> FindSomeFunction -> CallFunction  
+ReadInput (Get prompt from user) -> Buildprompt -> FindSomeFunction -> CallFunction
