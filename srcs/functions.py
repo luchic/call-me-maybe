@@ -3,6 +3,12 @@ import re
 
 
 class FunctionRunner:
+    GREET = "greet"
+    SUM = "add"
+    REVERSE = "reverse_string"
+    SQUARE_ROOT = "square_root"
+    REGEX = "substitute_string_with_regex"
+    
     """
         It's first version. Because i'm not sure how should i handle it.
         Some funcion return valuse. Some functions schould print something.
@@ -42,3 +48,12 @@ class FunctionRunner:
             return self.fn_substitute_string_with_regex(*args)
 
         raise ValueError(f"Unknown function: {function_name}")
+    
+    def get_simple_function_naming(self) -> list:
+        return [
+            self.GREET,
+            self.SUM,
+            self.REVERSE,
+            self.SQUARE_ROOT,
+            self.REGEX
+        ]
