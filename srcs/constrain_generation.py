@@ -3,6 +3,7 @@ import torch
 class GenerationController:
     prompt_length = 0
     allowed_tokens = None
+    prefix_token = None
     eof_token = None
 
     def set_promt_length(self, length: int):
@@ -15,6 +16,10 @@ class GenerationController:
             data.append(token)    
         self.allowed_tokens = data
 
+    def set_prefix_function_name_token(self, prefix: torch.Tensor):
+        self.prefix_token = prefix.flatten().tolist()
+
+
     def set_eof_token(self, eof_token):
         self.eof_token = eof_token
 
@@ -26,8 +31,8 @@ class GenerationController:
 
     def constarain_tokens(self, batch_id, input_ids):
         generated = input_ids[self.prompt_length:].tolist()
-        if (len(generated) == 0):
-            return self.get_set_of_tokens()
+        if (len(generated) < len(self.prefix_token)):
+            return self.prefix_token
 
         to_print = set()
         for allowed in self.allowed_tokens:
