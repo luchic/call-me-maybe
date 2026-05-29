@@ -33,11 +33,15 @@ class GenerationController:
         generated = input_ids[self.prompt_length:].tolist()
         if (len(generated) < len(self.prefix_token)):
             return self.prefix_token
-
-        to_print = set()
+        
+        next_tokens = []
         for allowed in self.allowed_tokens:
-            if generated == allowed:
-                return list((self.eof_token,))
-            if generated[-1] in allowed:
-                to_print.update(allowed)
-        return list(to_print)
+            if allowed[:len(generated)] != generated:
+                continue
+            if len(generated) == len(allowed):
+                return [self.eof_token]
+            next_tokens.append(allowed[len(generated)])
+
+        if (len(next_tokens) == 0):
+            return [self.eof_token]
+        return next_tokens
