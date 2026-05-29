@@ -22,7 +22,12 @@ Rules:
  - Do not explain.
  - Do not add punctuation.
  - The output must be one of the allowed function names.
+ - If no function match you have to return fn_none function
+ - Do not use a function just because the prompt contains numbers or text.
+ - All required parameters for the function must be clearly present in the user request.
+
 Available functions:{self._get_function_defention_text()}
+\t - fn_none: if you can't match user prompt to any function you have to call this function
 User request: {user_prompt}
 
 Function name:"""
@@ -40,5 +45,5 @@ Function name:"""
     def _get_function_defention_text(self) -> str:
         result = ""
         for index, function in enumerate(self.data):
-            result += f"\n\t - {function['name']}: {function['description']}"
+            result += f"\n\t - {function['name']}: {function['description']}" 
         return result
