@@ -1,0 +1,149 @@
+[
+  {
+    "prompt": "What is the sum of 2 and 3?"
+  },
+  {
+    "prompt": "What is the sum of 265 and 345?"
+  },
+  {
+    "prompt": "Add 14 plus 19 for me."
+  },
+  {
+    "prompt": "I have 7 apples and then get 8 more apples. How many apples total?"
+  },
+  {
+    "prompt": "Can you combine the numbers 100 and 250 into one total?"
+  },
+  {
+    "prompt": "Not multiplication, just 42 + 58."
+  },
+  {
+    "prompt": "Please calculate: five plus nine."
+  },
+  {
+    "prompt": "If x is 12 and y is 30, what is x added to y?"
+  },
+  {
+    "prompt": "Greet shrek"
+  },
+  {
+    "prompt": "Greet john"
+  },
+  {
+    "prompt": "Say hello to Maria."
+  },
+  {
+    "prompt": "Can you welcome Alex like a polite assistant?"
+  },
+  {
+    "prompt": "I need a greeting message for Dr. Stone."
+  },
+  {
+    "prompt": "Don't reverse anything, just greet Nika."
+  },
+  {
+    "prompt": "Make a friendly salutation for someone named Lee."
+  },
+  {
+    "prompt": "Reverse the string 'hello'"
+  },
+  {
+    "prompt": "Reverse the string 'world'"
+  },
+  {
+    "prompt": "Turn 'desserts' backwards."
+  },
+  {
+    "prompt": "Write 'stressed' in the opposite character order."
+  },
+  {
+    "prompt": "I do not need a greeting; flip the text 'bonjour'."
+  },
+  {
+    "prompt": "Take the word 'level' and reverse it, even though it looks the same."
+  },
+  {
+    "prompt": "Could you mirror the characters in \"abc123\"?"
+  },
+  {
+    "prompt": "What is the square root of 16?"
+  },
+  {
+    "prompt": "Calculate the square root of 144"
+  },
+  {
+    "prompt": "Find sqrt of 81."
+  },
+  {
+    "prompt": "Which number multiplied by itself gives 49?"
+  },
+  {
+    "prompt": "I need the root, not the sum, of 625."
+  },
+  {
+    "prompt": "Please calculate the square-root for 10,000."
+  },
+  {
+    "prompt": "The number is 121; get its square root."
+  },
+  {
+    "prompt": "Replace all numbers in \"Hello 34 I'm 233 years old\" with NUMBERS"
+  },
+  {
+    "prompt": "Replace all vowels in 'Programming is fun' with asterisks"
+  },
+  {
+    "prompt": "Substitute the word 'cat' with 'dog' in 'The cat sat on the mat with another cat'"
+  },
+  {
+    "prompt": "In 'room 404 is on floor 7', change every digit group to NUMBER."
+  },
+  {
+    "prompt": "Mask the email-like text in 'contact me at a@b.com' using X."
+  },
+  {
+    "prompt": "Change every space in 'a b c d' into an underscore."
+  },
+  {
+    "prompt": "Replace commas with semicolons in 'red,green,blue'."
+  },
+  {
+    "prompt": "In the sentence 'The rain in Spain', replace 'ain' with 'ANE'."
+  },
+  {
+    "prompt": "For 'banana', swap all letter a characters with @."
+  },
+  {
+    "prompt": "Take 'abc-123-xyz' and remove the dashes by replacing '-' with ''."
+  },
+  {
+    "prompt": "Do a text substitution: source='foo foo bar', pattern='foo', replacement='baz'."
+  },
+  {
+    "prompt": "Please don't add these numbers: in 'id 12 and id 34', replace numbers with ID."
+  },
+  {
+    "prompt": "This sounds like math but is text work: replace every 9 in '999 bottles' with nine."
+  },
+  {
+    "prompt": "Reverse? no. For 'hello hello', change hello to bye."
+  },
+  {
+    "prompt": "Can you greet the word 'Tom' after reversing it? Actually no, just say hello to Tom."
+  },
+  {
+    "prompt": "I wrote 'sum' in this sentence, but the task is to reverse 'sum'."
+  },
+  {
+    "prompt": "The phrase is 'add me'; reverse that exact phrase."
+  },
+  {
+    "prompt": "Hello assistant, what is 13 plus 29?"
+  },
+  {
+    "prompt": "Square root request hidden in a sentence: my code is 64, find its root."
+  },
+  {
+    "prompt": "Make 'HELLO' lowercase? Actually the available operation closest to changing text is replacing H with h in 'HELLO'."
+  }
+]

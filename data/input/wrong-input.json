@@ -1,0 +1,92 @@
+[
+  {
+    "prompt": "Translate 'hello world' into Spanish."
+  },
+  {
+    "prompt": "Sort the numbers 9, 2, 5, and 1 from smallest to largest."
+  },
+  {
+    "prompt": "Tell me the current weather in Berlin."
+  },
+  {
+    "prompt": "Send an email to Alex saying I will be late."
+  },
+  {
+    "prompt": "Create a calendar event for tomorrow at 3 PM."
+  },
+  {
+    "prompt": "Convert 10 kilometers to miles."
+  },
+  {
+    "prompt": "What is 8 multiplied by 7?"
+  },
+  {
+    "prompt": "Divide 144 by 12."
+  },
+  {
+    "prompt": "Calculate 2 to the power of 10."
+  },
+  {
+    "prompt": "Find the factorial of 6."
+  },
+  {
+    "prompt": "Is 97 a prime number?"
+  },
+  {
+    "prompt": "Generate a random password with 12 characters."
+  },
+  {
+    "prompt": "Summarize this sentence: The quick brown fox jumps over the lazy dog."
+  },
+  {
+    "prompt": "Detect the language of 'bonjour tout le monde'."
+  },
+  {
+    "prompt": "Make this text uppercase: 'quiet morning'."
+  },
+  {
+    "prompt": "Count how many words are in 'one two three four'."
+  },
+  {
+    "prompt": "Check whether 'racecar' is a palindrome."
+  },
+  {
+    "prompt": "Remove duplicate values from [1, 2, 2, 3, 3, 3]."
+  },
+  {
+    "prompt": "Parse the date '2026-05-28' and return the year."
+  },
+  {
+    "prompt": "Find the maximum number in 4, 18, 7, and 11."
+  },
+  {
+    "prompt": "Generate a short poem about debugging."
+  },
+  {
+    "prompt": "Open https://example.com in a browser."
+  },
+  {
+    "prompt": "Download the image from this URL."
+  },
+  {
+    "prompt": "Classify this review as positive or negative: 'The food was cold.'"
+  },
+  {
+    "prompt": "Return the first three letters of 'alphabet'."
+  },
+  {
+    "prompt": "Join the strings 'red', 'green', and 'blue' with commas."
+  },
+  {
+    "prompt": "Compute the average of 10, 20, and 30."
+  },
+  {
+    "prompt": "Tell me a joke about programming."
+  },
+  {
+    "prompt": "Search the web for the latest Python release."
+  },
+  {
+    "prompt": "Validate whether 'test@example.com' is a real email address."
+  }
+]
