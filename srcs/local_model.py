@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer, PreTrainedTokenizer, PreTrainedModel, logging
 from huggingface_hub import hf_hub_download
 from typing import Callable
@@ -83,7 +84,7 @@ class LocalLLM:
     def decode(self, ids: torch.Tensor | list[int]) -> str:
         """Inverse of :py:meth:`encode`. Removes special tokens."""
         if isinstance(ids, torch.Tensor):
-            ids = ids.tolist()
+            ids = ids.squeeze(0).tolist()
         return self._tokenizer.decode(ids, skip_special_tokens=True)
 
     def ids_to_list(self, ids: torch.Tensor | list[int]) -> list[int]:
@@ -93,6 +94,77 @@ class LocalLLM:
     
     def get_eof_token_id(self):
         return self._tokenizer.eos_token_id
+
+    def generate_with_probabilities(
+        self, ids: torch.Tensor,
+        allowed_tokens_fn: Optional[Callable[[int, torch.Tensor], list[int]]] = None
+    ) -> torch.Tensor:
+        """Generate text from *ids*.
+
+        By default this returns only the newly generated tokens. Set
+        ``include_prompt=True`` to decode the prompt together with the completion.
+
+        """
+        with torch.no_grad():
+            output_ids = self._model.generate(input_ids=ids,
+                max_new_tokens=10,
+                do_sample=False,
+                num_beams=1,
+                prefix_allowed_tokens_fn=allowed_tokens_fn,
+                pad_token_id=self._tokenizer.pad_token_id,
+                eos_token_id=self._tokenizer.eos_token_id,
+                return_dict_in_generate=True,
+                output_scores=True,              
+            )
+
+        transition_scores = self._model.compute_transition_scores(
+            output_ids.sequences,
+            output_ids.scores,
+            normalize_logits=True,
+        )
+
+        token_log_probs = transition_scores[0]
+        token_probs = torch.exp(token_log_probs)
+        answer_probability = token_probs.prod().item()
+        genereted = output_ids.sequences[:, ids.shape[-1]:]
+        return genereted, answer_probability
+
+    def generate_function_name(
+        self, ids: torch.Tensor,
+        none_function="ft_none",
+        allowed_tokens_fn: Optional[Callable[[int, torch.Tensor], list[int]]] = None
+    ) -> torch.Tensor:
+        """Generate text from *ids*.
+
+        By default this returns only the newly generated tokens. Set
+        ``include_prompt=True`` to decode the prompt together with the completion.
+
+        """
+        with torch.no_grad():
+            output_ids = self._model.generate(input_ids=ids,
+                max_new_tokens=10,
+                do_sample=False,
+                num_beams=1,
+                prefix_allowed_tokens_fn=allowed_tokens_fn,
+                pad_token_id=self._tokenizer.pad_token_id,
+                eos_token_id=self._tokenizer.eos_token_id,
+                return_dict_in_generate=True,
+                output_scores=True,              
+            )
+
+        transition_scores = self._model.compute_transition_scores(
+            output_ids.sequences,
+            output_ids.scores,
+            normalize_logits=True,
+        )
+        token_log_probs = transition_scores[0]
+        token_probs = torch.exp(token_log_probs)
+        answer_probability = token_probs.prod().item()
+
+        if (answer_probability < 0.98):
+            return none_function 
+        genereted = output_ids.sequences[:, ids.shape[-1]:]
+        return self.decode(genereted)
 
     def generate(
         self, ids: torch.Tensor,
@@ -111,9 +183,7 @@ class LocalLLM:
                 num_beams=1,
                 prefix_allowed_tokens_fn=allowed_tokens_fn,
                 pad_token_id=self._tokenizer.pad_token_id,
-                eos_token_id=self._tokenizer.eos_token_id
+                eos_token_id=self._tokenizer.eos_token_id       
             )
 
-        output_ids = output_ids[:, ids.shape[-1]:]
-        print(output_ids)
-        return self.decode(output_ids[0])
+        return self.decode(output_ids[:, ids.shape[-1]:])
