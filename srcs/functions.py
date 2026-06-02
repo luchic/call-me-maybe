@@ -3,17 +3,20 @@ import re
 
 
 class FunctionRunner:
-    GREET = "greet"
-    SUM = "add"
-    REVERSE = "reverse_string"
-    SQUARE_ROOT = "square_root"
-    REGEX = "substitute_string_with_regex"
-    
     """
         It's first version. Because i'm not sure how should i handle it.
         Some funcion return valuse. Some functions schould print something.
         So I thinks i need to change it later.
     """
+
+    PREFIX = "fn"
+    GREET = "fn_greet"
+    SUM = "fn_add_numbers"
+    REVERSE = "fn_reverse_string"
+    SQUARE_ROOT = "fn_get_square_root"
+    REGEX = "fn_substitute_string_with_regex"
+    NONE = "fn_none"
+    
     def fn_add_numbers(self, a: float, b: float) -> float:
         return a + b
 
@@ -27,7 +30,10 @@ class FunctionRunner:
         return math.sqrt(a)
 
     def fn_substitute_string_with_regex(
-        self, source_string: str, regex: str, replacement: str
+        self,
+        source_string: str,
+        regex: str,
+        replacement: str
     ) -> str:
         return re.sub(regex, replacement, source_string)
 
@@ -57,3 +63,6 @@ class FunctionRunner:
             self.SQUARE_ROOT,
             self.REGEX
         ]
+
+    def get_prefix_of_function(self):
+        return self.PREFIX
