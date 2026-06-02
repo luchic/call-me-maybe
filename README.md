@@ -12,10 +12,10 @@ Then I can use these tokens to parse the user data.
 
 ## Some hints
 
-Make work line mask replacement:
+I need also to create an abstract class for data reader. For json reader shouldn't return array, but use **yield** to return one by one line of text s
 
 
-Flow:
-
-(It could be done with go language)
-ReadInput (Get prompt from user) -> Buildprompt -> FindSomeFunction -> CallFunction
+## Some details
+I'm add suffex to every function name for generate output for output.
+I think if i use fn like first generated token for model, model will begin generation
+with fn and than will use only functions name if i constraion output.

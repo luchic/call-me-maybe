@@ -168,7 +168,8 @@ class LocalLLM:
 
     def generate(
         self, ids: torch.Tensor,
-        allowed_tokens_fn: Optional[Callable[[int, torch.Tensor], list[int]]] = None
+        allowed_tokens_fn: Optional[Callable[[int, torch.Tensor], list[int]]] = None,
+        max_new_tokens: int = 10,
     ) -> str:
         """Generate text from *ids*.
 
@@ -178,7 +179,7 @@ class LocalLLM:
         """
         with torch.no_grad():
             output_ids = self._model.generate(input_ids=ids,
-                max_new_tokens=10,
+                max_new_tokens=max_new_tokens,
                 do_sample=False,
                 num_beams=1,
                 prefix_allowed_tokens_fn=allowed_tokens_fn,
