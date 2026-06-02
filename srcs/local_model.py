@@ -161,7 +161,7 @@ class LocalLLM:
         token_probs = torch.exp(token_log_probs)
         answer_probability = token_probs.prod().item()
 
-        if (answer_probability < 0.98):
+        if (answer_probability < 0.97):
             return none_function 
         genereted = output_ids.sequences[:, ids.shape[-1]:]
         return self.decode(genereted)
