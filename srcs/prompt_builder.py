@@ -61,6 +61,41 @@ User message: {user_prompt}
 Now extract only arguments from user prompt: """
         return prompt
 
+    def setup_argument_slot_prompt_builder(
+        self,
+        user_prompt: str,
+        function_name: str,
+        argument_name: str,
+        argument_schema: dict[str, Any],
+        json_prefix: str,
+    ) -> str:
+        argument_type = argument_schema["type"]
+        prompt = f"""You are filling one value in a JSON function call.
+
+Rules:
+- Output only the value for the requested argument.
+- Do not output the argument name.
+- Do not output JSON syntax.
+- Do not explain.
+- If the value is missing or unclear, output null.
+- For type number, output only digits, decimal point, or minus sign.
+- For type string, copy only exact words from the user request without quotes.
+- Use only information clearly present in the user request.
+
+User request:
+<<<{user_prompt}>>>
+
+Function: {function_name}
+Function description: {self._get_function_description(function_name)}
+Requested argument: {argument_name}
+Requested argument type: {argument_type}
+
+JSON prefix already written by the program:
+{json_prefix}
+
+Now output only the value for {argument_name}: """
+        return prompt
+
     def _get_function_description(self, function_name:str):
         for function in self._data:
             if function['name'] == function_name:
