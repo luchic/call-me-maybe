@@ -88,7 +88,7 @@ class ArgumentExtractor:
         if function_name == "fn_substitute_string_with_regex":
             return self._extract_regex_substitution(user_prompt)
 
-        return None
+        return {}
 
     def _has_all_arguments(
         self,

@@ -4,6 +4,8 @@ from .local_model import LocalLLM
 from .functions import FunctionRunner
 from .constrain_generation import GenerationController
 from .argument_extractor import ArgumentExtractor
+from .pipeline import Pipeline
+from .function_extractor import FunctionExtractor
 
 def main():
     # reader = ReadInputJson("./data/input/wrong-input.json")
@@ -25,18 +27,12 @@ def main():
     controller.set_prefix_function_name_token(prefix_ids)
     controller.set_eof_token(model.get_eof_token_id())
 
-    text = reader.read()
-    for index, text in enumerate(text):
-        prompt = builder.setup_prompt(text)
-        ids = model.encode(prompt)
-        controller.set_promt_length(ids.shape[1])
-        generated = model.generate_function_name(ids, allowed_tokens_fn=controller.constarain_tokens)
-        print(index, "==== generated ======")
-        print(generated)
-        if (generated != "fn_none"):
-            result = extractor.extract_arguments(text, generated)
-            print(result)
 
+    function_extractor = FunctionExtractor(model, builder, controller)
+
+    pipeline = Pipeline(reader, function_extractor, extractor);
+
+    pipeline.run()
 
 
 if __name__ == "__main__":

@@ -1,9 +1,15 @@
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 from .mappers.user_prompt_validator import UserPromptValidator
 
-class ReadInputJson:
+from abc import ABC, abstractmethod
+class InputReader(ABC):
+    @abstractmethod
+    def read_next(self) -> Iterator[str]:
+        pass
+
+class ReadInputJson(InputReader):
     def __init__(self, source: str | Path) -> None:
         if not isinstance(source, str | Path):
             raise TypeError("source must be a string path or pathlib.Path")
@@ -16,7 +22,12 @@ class ReadInputJson:
         if not self.source.is_file():
             raise ValueError(f"Path is not a file: {self.source}")
     
-    def read(self) -> list[str]:
+    def read_next(self):
+        data = self._read()
+        for prompt in data:
+            yield prompt
+
+    def _read(self) -> list[str]:
         data = self.read_raw()
         return self._extract_prompts(data)
 

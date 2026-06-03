@@ -19,7 +19,7 @@ class FunctionExtractor:
         self._generation_controller=generation_controller
 
     def extract_function_name(self, user_prompt: str):
-        prompt = self.prompt_builder.setup_prompt(user_prompt)
+        prompt = self._prompt_builder.setup_prompt(user_prompt)
         ids = self._model.encode(prompt)
         self._generation_controller.set_promt_length(ids.shape[1])
         return self._model.generate_function_name(
